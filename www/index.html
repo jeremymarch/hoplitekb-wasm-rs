@@ -5,15 +5,15 @@
   <body>
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
-      import { toggle, reverse, default as init } from './hoplitekb_wasm_rs.js';
+      import { toggle, /*reverse,*/ default as init } from './hoplitekb_wasm_rs.js';
 
       async function run() {
         await init('./hoplitekb_wasm_rs_bg.wasm');
 
         // make the function available to the browser
-        window.reverse = reverse;
+        //window.reverse = reverse;
         window.toggle = toggle;
-        var a = toggle("ὼ", 1, false, 0);
+        var a = toggle("ὢ", 8, false, 0);
         alert(a);
       }
 
@@ -28,7 +28,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
         <input 
             type="submit" 
             value="Reverse string" 
-            onClick="lipsum.value = reverse(lipsum.value)">
+            onClick="/*lipsum.value = reverse(lipsum.value)*/">
     </form> 
   </body>
 
