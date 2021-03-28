@@ -2,6 +2,7 @@ extern crate rustunicodetests;
 use rustunicodetests::HGKUnicode_Mode;
 use rustunicodetests::HGKDiacritics;
 use rustunicodetests::toggle_diacritic_str;
+use rustunicodetests::transliterate;
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
@@ -35,6 +36,17 @@ pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 	};
 
 	return toggle_diacritic_str(l, dia, on_only, m);
+}
+
+#[wasm_bindgen]
+pub fn translit(l:&str) -> String {
+	if l.chars().nth(0) != None {
+		let input = l.chars().nth(0).unwrap();
+		return transliterate(input as usize).to_string();
+	}
+	else {
+		return l.to_string();
+	}
 }
 /*
 #[wasm_bindgen]

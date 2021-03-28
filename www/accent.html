@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
-      import { toggle, /*reverse,*/ default as init } from './hoplitekb_wasm_rs.js';
+      import { toggle, translit, default as init } from './hoplitekb_wasm_rs.js';
 
       async function run() {
         await init('./hoplitekb_wasm_rs_bg.wasm');
@@ -17,6 +17,7 @@
         // make the function available to the browser
         //window.reverse = reverse;
         window.toggle = toggle;
+        window.translit = translit;
         //var a = toggle("ὢ", 8, false, 0);
         //alert(a);
       }
@@ -50,13 +51,6 @@ function strToCodePoints(str)
         a += str.codePointAt(i).toString(16).padStart(4,"0").toUpperCase() + " ";
     }
     return a.trim();
-}
-
-function doAll(e)
-{
-    var a = handleKey.call(this, e);
-    //setTimeout(convertLocal, 500);
-    return a;
 }
 
 function start() {
@@ -111,9 +105,8 @@ function handleKey(e) {
         if (charCode && charCode > 64 && charCode < 123) //transliterate letter
         {
             //newLetter = accentSyllable("", key.codePointAt(0));
-            //newLetter = String.fromCharCode( transliterateWASM( key.codePointAt(0) ) );
-            console.log("new: " + newLetter);
-            return true;
+            newLetter = translit( key ) ;
+            console.log("new: " + newLetter + ", " + key );
         }
         else if (charCode && charCode > 47 && charCode < 58) //number: 0-9 are 48-57
         { 
