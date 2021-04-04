@@ -1,6 +1,13 @@
+#![no_std]
+#![deny(unsafe_code)]
+
+#[macro_use]
+extern crate alloc;
+use alloc::string::*;
+
 extern crate rustunicodetests;
-use rustunicodetests::HGKUnicode_Mode;
-use rustunicodetests::HGKDiacritics;
+use rustunicodetests::*;
+//use rustunicodetests::HGKDiacritics;
 use rustunicodetests::toggle_diacritic_str;
 use rustunicodetests::transliterate;
 
@@ -16,16 +23,16 @@ pub extern fn add(x: u32, y: u32) -> u32 {
 pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 	
 	let dia = match d {
-		1 => HGKDiacritics::ROUGH,
-		2 => HGKDiacritics::SMOOTH,
-		3 => HGKDiacritics::ACUTE,
-		4 => HGKDiacritics::GRAVE,
-		5 => HGKDiacritics::CIRCUMFLEX,
-		6 => HGKDiacritics::MACRON,
-		7 => HGKDiacritics::BREVE,
-		8 => HGKDiacritics::IOTA_SUBSCRIPT,
-		9 => HGKDiacritics::DIAERESIS,
-		0 => HGKDiacritics::UNDERDOT,
+		1 => HGK_ROUGH,
+		2 => HGK_SMOOTH,
+		3 => HGK_ACUTE,
+		4 => HGK_GRAVE,
+		5 => HGK_CIRCUMFLEX,
+		6 => HGK_MACRON,
+		7 => HGK_BREVE,
+		8 => HGK_IOTA_SUBSCRIPT,
+		9 => HGK_DIAERESIS,
+		0 => HGK_UNDERDOT,
 		_ => return l.into()
 	};
 
