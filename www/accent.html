@@ -71,11 +71,12 @@ console.log(supported ? "WebAssembly is supported" : "WebAssembly is not support
 	$(".gkinput").keypress(handleKey);
     $("#inp").focus();
     //$(".gkinput").unbind("keypress");
-/*
+
     $("#inp").keyup(function() {
         
         $("#codes").val( strToCodePoints(this.value) );
-        var stripped = stripDiacriticsLocal(this.value);
+    });
+/*        var stripped = stripDiacriticsLocal(this.value);
         $("#codes2").val(stripped);
         $("#codes3").val( strToCodePoints(stripped) );  
         convertLocal(this.value); 
@@ -198,8 +199,8 @@ body {
 <body onload="start()">
     <div id="container">
 	<input type="radio" checked name="unicodeMode" value="0">Precomposed
-    <input type="radio" name="unicodeMode" value="1">Precomposed with PUA
-    <input type="radio" name="unicodeMode" value="2">Combining-only
+    <input type="radio" name="unicodeMode" value="2">Precomposed with PUA
+    <input type="radio" name="unicodeMode" value="1">Combining-only
 
     | <input type="radio" name="lowerCaseMode" value="1">Force Lowercase
     <input type="radio" checked name="lowerCaseMode" value="0">Allow Uppercase

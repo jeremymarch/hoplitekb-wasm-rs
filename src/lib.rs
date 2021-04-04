@@ -1,24 +1,18 @@
 #![no_std]
 #![deny(unsafe_code)]
 
-#[macro_use]
+//#[macro_use]
 extern crate alloc;
 use alloc::string::*;
 
 extern crate rustunicodetests;
 use rustunicodetests::*;
-//use rustunicodetests::HGKDiacritics;
 use rustunicodetests::toggle_diacritic_str;
 use rustunicodetests::transliterate;
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
-/*
-#[no_mangle]
-pub extern fn add(x: u32, y: u32) -> u32 {
-    x + y
-}
-*/
+
 #[wasm_bindgen]
 pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 	
@@ -37,9 +31,9 @@ pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 	};
 
 	let m = match mode {
-		1 => HGKUnicode_Mode::CombiningOnly,
-		2 => HGKUnicode_Mode::PrecomposedPUA,
-		_ => HGKUnicode_Mode::Precomposed
+		1 => HgkUnicodeMode::CombiningOnly,
+		2 => HgkUnicodeMode::PrecomposedPUA,
+		_ => HgkUnicodeMode::Precomposed
 	};
 
 	return toggle_diacritic_str(l, dia, on_only, m);
@@ -55,17 +49,3 @@ pub fn translit(l:&str) -> String {
 		return l.to_string();
 	}
 }
-/*
-#[wasm_bindgen]
-pub fn reverse(s: String) -> String {
-    s.chars().rev().collect::<String>()
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
-*/
