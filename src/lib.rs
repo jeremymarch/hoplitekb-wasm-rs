@@ -27,7 +27,7 @@ pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 		8 => HGK_IOTA_SUBSCRIPT,
 		9 => HGK_DIAERESIS,
 		0 => HGK_UNDERDOT,
-		_ => return l.into()
+		_ => return l.into() //return string unchanged, if d is invalid
 	};
 
 	let m = match mode {
