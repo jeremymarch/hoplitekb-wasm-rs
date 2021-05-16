@@ -7,8 +7,8 @@ use alloc::string::*;
 
 extern crate rustunicodetests;
 use rustunicodetests::*;
-use rustunicodetests::toggle_diacritic_str;
-use rustunicodetests::transliterate;
+use rustunicodetests::hgk_toggle_diacritic_str;
+use rustunicodetests::hgk_transliterate;
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
@@ -36,14 +36,14 @@ pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 		_ => HgkUnicodeMode::Precomposed
 	};
 
-	toggle_diacritic_str(l, dia, on_only, m)
+	hgk_toggle_diacritic_str(l, dia, on_only, m)
 }
 
 #[wasm_bindgen]
 pub fn translit(l:&str) -> String {
 	if l.chars().next() != None {
 		let input = l.chars().next().unwrap();
-		transliterate(input as usize).to_string()
+		hgk_transliterate(input as usize).to_string()
 	}
 	else {
 		l.to_string()
