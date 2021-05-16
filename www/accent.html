@@ -127,7 +127,8 @@ function handleKey(e) {
             }
 
             unicodeMode = $("input:radio[name='unicodeMode']:checked").val();
-
+            console.log("unicode mode: " + unicodeMode);
+            
             //newLetter = accentSyllable(val.slice(start - offset, start), parseInt(key), false, parseInt(unicodeMode));
             newLetter = toggle(val.slice(start - offset, start), parseInt(key), false, parseInt(unicodeMode));
             replacing = start - (start - offset);

@@ -36,16 +36,16 @@ pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 		_ => HgkUnicodeMode::Precomposed
 	};
 
-	return toggle_diacritic_str(l, dia, on_only, m);
+	toggle_diacritic_str(l, dia, on_only, m)
 }
 
 #[wasm_bindgen]
 pub fn translit(l:&str) -> String {
-	if l.chars().nth(0) != None {
-		let input = l.chars().nth(0).unwrap();
-		return transliterate(input as usize).to_string();
+	if l.chars().next() != None {
+		let input = l.chars().next().unwrap();
+		transliterate(input as usize).to_string()
 	}
 	else {
-		return l.to_string();
+		l.to_string()
 	}
 }
