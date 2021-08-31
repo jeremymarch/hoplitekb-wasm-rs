@@ -8,10 +8,17 @@ use alloc::string::*;
 extern crate rustunicodetests;
 use rustunicodetests::*;
 use rustunicodetests::hgk_toggle_diacritic_str;
+use rustunicodetests::hgk_strip_diacritics;
 use rustunicodetests::hgk_transliterate;
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
+
+
+#[wasm_bindgen]
+pub fn strip_diacritics(l:&str) -> String {
+	hgk_strip_diacritics(l)
+}
 
 #[wasm_bindgen]
 pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {

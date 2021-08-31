@@ -1,4 +1,4 @@
-To build:
+To build: (testing)
 
 cargo build --target wasm32-unknown-unknown --release
 
