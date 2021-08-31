@@ -9,15 +9,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
-      import { toggle, translit, default as init } from './hoplitekb_wasm_rs.js';
+      import { convert, toggle, translit, strip_diacritics, default as init } from './hoplitekb_wasm_rs.js';
 
       async function run() {
         await init('./hoplitekb_wasm_rs_bg.wasm');
 
         // make the function available to the browser
         //window.reverse = reverse;
+        window.convert = convert;
         window.toggle = toggle;
         window.translit = translit;
+        window.strip_diacritics = strip_diacritics;
+        
         //var a = toggle("ὢ", 8, false, 0);
         //alert(a);
       }
@@ -75,6 +78,14 @@ console.log(supported ? "WebAssembly is supported" : "WebAssembly is not support
     $("#inp").keyup(function() {
         
         $("#codes").val( strToCodePoints(this.value) );
+
+        var stripped = strip_diacritics(this.value);
+        $("#codes2").val(stripped);
+        $("#codes3").val( strToCodePoints(stripped) );
+
+        var conv = convert(this.value, 2);
+        $("#conv1").val(conv);
+        $("#conv2").val( strToCodePoints(conv) );
     });
 /*        var stripped = stripDiacriticsLocal(this.value);
         $("#codes2").val(stripped);
@@ -139,17 +150,22 @@ function handleKey(e) {
             this.value = val.slice(0, start - replacing) + newLetter + val.slice(end);
             // Move the caret
             this.selectionStart = this.selectionEnd = (start - replacing) + newLetter.length;
-            //doElse();
+            doElse();
             return false;
         }
         else if (charCode && ((charCode > 47 && charCode < 58) || (charCode > 64 && charCode < 123)))
         {
-            //doElse();
+            doElse();
             return false; //this prevents numbers from being possible at very start of text field
         }
     }
-    //doElse();
+    doElse();
     return true; //this allows most punctuation to pass through
+}
+
+function doElse() {
+
+
 }
 
 </script>

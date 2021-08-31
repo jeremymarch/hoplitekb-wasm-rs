@@ -10,6 +10,7 @@ use rustunicodetests::*;
 use rustunicodetests::hgk_toggle_diacritic_str;
 use rustunicodetests::hgk_strip_diacritics;
 use rustunicodetests::hgk_transliterate;
+use rustunicodetests::hgk_convert;
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
@@ -18,6 +19,16 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 pub fn strip_diacritics(l:&str) -> String {
 	hgk_strip_diacritics(l)
+}
+
+#[wasm_bindgen]
+pub fn convert(l:&str, mode:i32) -> String {
+	let m = match mode {
+		1 => HgkUnicodeMode::CombiningOnly,
+		2 => HgkUnicodeMode::PrecomposedPUA,
+		_ => HgkUnicodeMode::Precomposed
+	};
+	hgk_convert(l, m)
 }
 
 #[wasm_bindgen]
