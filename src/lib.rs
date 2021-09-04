@@ -67,3 +67,8 @@ pub fn translit(l:&str) -> String {
 		l.to_string()
 	}
 }
+
+#[wasm_bindgen]
+pub fn compare(a:&str, b:&str, compare_type:u32) -> i32 {
+	hgk_compare(a, b, compare_type)
+}

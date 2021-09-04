@@ -159,6 +159,21 @@ export function translit(l) {
     }
 }
 
+/**
+* @param {string} a
+* @param {string} b
+* @param {number} compare_type
+* @returns {number}
+*/
+export function compare(a, b, compare_type) {
+    var ptr0 = passStringToWasm0(a, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len0 = WASM_VECTOR_LEN;
+    var ptr1 = passStringToWasm0(b, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len1 = WASM_VECTOR_LEN;
+    var ret = wasm.compare(ptr0, len0, ptr1, len1, compare_type);
+    return ret;
+}
+
 async function load(module, imports) {
     if (typeof Response === 'function' && module instanceof Response) {
         if (typeof WebAssembly.instantiateStreaming === 'function') {

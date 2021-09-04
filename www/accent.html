@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
-      import { convert, toggle, translit, strip_diacritics, default as init } from './hoplitekb_wasm_rs.js';
+      import { compare, convert, toggle, translit, strip_diacritics, default as init } from './hoplitekb_wasm_rs.js';
 
       async function run() {
         await init('./hoplitekb_wasm_rs_bg.wasm');
@@ -20,6 +20,7 @@
         window.toggle = toggle;
         window.translit = translit;
         window.strip_diacritics = strip_diacritics;
+        window.compare = compare;
         
         //var a = toggle("ὢ", 8, false, 0);
         //alert(a);
@@ -83,7 +84,9 @@ console.log(supported ? "WebAssembly is supported" : "WebAssembly is not support
         $("#codes2").val(stripped);
         $("#codes3").val( strToCodePoints(stripped) );
 
-        var conv = convert(this.value, 2);
+        var convertMode = $("input:radio[name='convertMode']:checked").val();
+        //console.log("convert mode: " + convertMode);
+        var conv = convert(this.value, parseInt(convertMode));
         $("#conv1").val(conv);
         $("#conv2").val( strToCodePoints(conv) );
     });
@@ -94,7 +97,15 @@ console.log(supported ? "WebAssembly is supported" : "WebAssembly is not support
     }); */
     //$("#inp").on("change", function(){convertLocal()});
 
-    //$("#compareButton").click(compareLocal);
+    $("#compareButton").click(compareLocal);
+}
+
+function compareLocal() {
+    var a = $("#comp1").val();
+    var b = $("#comp2").val();
+    var c = compare(a, b, 0);
+
+    $("#compareResult").text(c);
 }
 
 var forceLowercase = true;
@@ -138,7 +149,7 @@ function handleKey(e) {
             }
 
             unicodeMode = $("input:radio[name='unicodeMode']:checked").val();
-            console.log("unicode mode: " + unicodeMode);
+            //console.log("unicode mode: " + unicodeMode);
             
             //newLetter = accentSyllable(val.slice(start - offset, start), parseInt(key), false, parseInt(unicodeMode));
             newLetter = toggle(val.slice(start - offset, start), parseInt(key), false, parseInt(unicodeMode));
@@ -150,22 +161,17 @@ function handleKey(e) {
             this.value = val.slice(0, start - replacing) + newLetter + val.slice(end);
             // Move the caret
             this.selectionStart = this.selectionEnd = (start - replacing) + newLetter.length;
-            doElse();
+            //doElse();
             return false;
         }
         else if (charCode && ((charCode > 47 && charCode < 58) || (charCode > 64 && charCode < 123)))
         {
-            doElse();
+            //doElse();
             return false; //this prevents numbers from being possible at very start of text field
         }
     }
-    doElse();
+    //doElse();
     return true; //this allows most punctuation to pass through
-}
-
-function doElse() {
-
-
 }
 
 </script>
@@ -232,8 +238,8 @@ body {
     <br><br>
     <br>Convert:  
     <input type="radio" name="convertMode" value="0">Precomposed
-    <input type="radio" name="convertMode" value="1">Precomposed with PUA
-    <input type="radio" checked name="convertMode" value="2">Combining-only<br>
+    <input type="radio" name="convertMode" value="2">Precomposed with PUA
+    <input type="radio" checked name="convertMode" value="1">Combining-only<br>
     <input class="gkinputnontyping" type="text" id="conv1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
     <input class="gkinputcodes" type="text" id="conv2" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
 
