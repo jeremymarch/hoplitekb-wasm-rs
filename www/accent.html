@@ -103,7 +103,7 @@ console.log(supported ? "WebAssembly is supported" : "WebAssembly is not support
 function compareLocal() {
     var a = $("#comp1").val();
     var b = $("#comp2").val();
-    var c = compare(a, b, 0);
+    var c = compare(a, b, 0xFFFFFFFF);
 
     $("#compareResult").text(c);
 }
