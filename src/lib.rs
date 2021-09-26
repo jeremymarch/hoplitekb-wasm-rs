@@ -18,7 +18,7 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub fn strip_diacritics(l:&str) -> String {
-	hgk_strip_diacritics(l)
+	hgk_strip_diacritics(l, 0xFFFFFFFF)
 }
 
 #[wasm_bindgen]
