@@ -1,12 +1,12 @@
-To build: (testing)
-
-cargo build --target wasm32-unknown-unknown --release
+To build and test with files in www directory:  
 
 if not installed:  
 cargo install -f wasm-bindgen-cli
 
-wasm-bindgen --target web --no-typescript --out-dir www/ target/wasm32-unknown-unknown/release/hoplitekb_wasm_rs.wasm
+1. cargo build --target wasm32-unknown-unknown --release
 
-python3 -m http.server --directory www 8000
+2. wasm-bindgen --target web --no-typescript --out-dir www/ target/wasm32-unknown-unknown/release/hoplitekb_wasm_rs.wasm
 
-http://0.0.0.0:8000/
+3. python3 -m http.server --directory www 8000
+
+4. http://0.0.0.0:8000/
