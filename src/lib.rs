@@ -5,12 +5,12 @@
 extern crate alloc;
 use alloc::string::*;
 
-extern crate rustunicodetests;
-use rustunicodetests::*;
-use rustunicodetests::hgk_toggle_diacritic_str;
-use rustunicodetests::hgk_strip_diacritics;
-use rustunicodetests::hgk_transliterate;
-use rustunicodetests::hgk_convert;
+extern crate polytonic_greek;
+use polytonic_greek::*;
+use polytonic_greek::hgk_toggle_diacritic_str;
+use polytonic_greek::hgk_strip_diacritics;
+use polytonic_greek::hgk_transliterate;
+use polytonic_greek::hgk_convert;
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
