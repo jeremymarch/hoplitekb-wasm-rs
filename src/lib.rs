@@ -7,10 +7,6 @@ use alloc::string::*;
 
 extern crate polytonic_greek;
 use polytonic_greek::*;
-use polytonic_greek::hgk_toggle_diacritic_str;
-use polytonic_greek::hgk_strip_diacritics;
-use polytonic_greek::hgk_transliterate;
-use polytonic_greek::hgk_convert;
 
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
@@ -54,7 +50,8 @@ pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 		_ => HgkUnicodeMode::Precomposed
 	};
 
-	hgk_toggle_diacritic_str(l, dia, on_only, m)
+	//hgk_toggle_diacritic_str(l, dia, on_only, m)
+	hgk_toggle_diacritic_str_end(l, dia, on_only, m)
 }
 
 #[wasm_bindgen]

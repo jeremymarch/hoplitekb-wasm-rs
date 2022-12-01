@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -7,178 +7,143 @@
 <meta http-equiv="Expires" content="0" />
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
-      import { compare, convert, toggle, translit, strip_diacritics, default as init } from './hoplitekb_wasm_rs.js';
+        import { compare, convert, toggle, translit, strip_diacritics, default as init } from './hoplitekb_wasm_rs.js';
 
-      async function run() {
-        await init('./hoplitekb_wasm_rs_bg.wasm');
+        async function run() {
+            await init('./hoplitekb_wasm_rs_bg.wasm');
 
-        // make the function available to the browser
-        //window.reverse = reverse;
-        window.convert = convert;
-        window.toggle = toggle;
-        window.translit = translit;
-        window.strip_diacritics = strip_diacritics;
-        window.compare = compare;
-        
-        //var a = toggle("ὢ", 8, false, 0);
-        //alert(a);
-      }
-
-      run(); 
+            // make the function available to the browser
+            //window.reverse = reverse;
+            window.convert = convert;
+            window.toggle = toggle;
+            window.translit = translit;
+            window.strip_diacritics = strip_diacritics;
+            window.compare = compare;
+        }
+        run(); 
     </script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"
-integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-crossorigin="anonymous"></script>
 <script>
+const _MACRON     = 1;
+const _SMOOTH     = 2;
+const _ROUGH      = 4;
+const _ACUTE      = 8;
+const _GRAVE      = 16;
+const _CIRCUMFLEX = 32;
+const _IOTA_SUB   = 64;
+const _DIAERESIS  = 128;
+const _BREVE      = 256;
+const _UNDERDOT   = 512;
+const _CASE_SENSITIVE = 1024; //, not used yet
+const _HK_IGNORE_UNKNOWN_CHARS = 2048;
 
-var _MACRON     = 1;
-var _SMOOTH     = 2;
-var _ROUGH      = 4;
-var _ACUTE      = 8;
-var _GRAVE      = 16;
-var _CIRCUMFLEX = 32;
-var _IOTA_SUB   = 64;
-var _DIAERESIS  = 128;
-var _BREVE      = 256;
-var _UNDERDOT   = 512;
-var _CASE_SENSITIVE = 1024; //, not used yet
-var _HK_IGNORE_UNKNOWN_CHARS = 2048;
-
-
-
-function strToCodePoints(str)
-{
-    var a = "";
-    for (var i = 0; i < str.length; i++) {
-        a += str.codePointAt(i).toString(16).padStart(4,"0").toUpperCase() + " ";
+function strToCodePoints(str) {
+    let a = "";
+    for (let i = 0; i < str.length; i++) {
+        a += str.codePointAt(i).toString(16).padStart(4, "0").toUpperCase() + " ";
     }
     return a.trim();
 }
 
 function start() {
-const supported = (() => {
-    try {
-        if (typeof WebAssembly === "object"
-            && typeof WebAssembly.instantiate === "function") {
-            const module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
-            if (module instanceof WebAssembly.Module)
-                return new WebAssembly.Instance(module) instanceof WebAssembly.Instance;
-        }
-    } catch (e) {
+    const supported = (() => {
+        try {
+            if (typeof WebAssembly === "object"
+                && typeof WebAssembly.instantiate === "function") {
+                const module = new WebAssembly.Module(Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00));
+                if (module instanceof WebAssembly.Module)
+                    return new WebAssembly.Instance(module) instanceof WebAssembly.Instance;
+            }
+        } catch (e) { }
+        return false;
+    })();
+    console.log(supported ? "WebAssembly is supported" : "WebAssembly is not supported");
+
+	let el = document.querySelectorAll(".gkinput");
+    for (let i = 0; i < el.length; i++) {
+        el[i].addEventListener("keypress", handleKey, false);
     }
-    return false;
-})();
-console.log(supported ? "WebAssembly is supported" : "WebAssembly is not supported");
+    document.querySelector("#inp").focus();
 
-	$(".gkinput").keypress(handleKey);
-    $("#inp").focus();
-    //$(".gkinput").unbind("keypress");
-
-    $("#inp").keyup(function() {
+    document.querySelector("#inp").addEventListener("keyup", function() {
         
-        $("#codes").val( strToCodePoints(this.value) );
+        document.querySelector("#codes").value = strToCodePoints(this.value) ;
 
         var stripped = strip_diacritics(this.value);
-        $("#codes2").val(stripped);
-        $("#codes3").val( strToCodePoints(stripped) );
+        document.querySelector("#codes2").value = stripped;
+        document.querySelector("#codes3").value = strToCodePoints(stripped) ;
 
-        var convertMode = $("input:radio[name='convertMode']:checked").val();
+        var convertMode = document.querySelector("input[name=convertMode]:checked").value;
         //console.log("convert mode: " + convertMode);
         var conv = convert(this.value, parseInt(convertMode));
-        $("#conv1").val(conv);
-        $("#conv2").val( strToCodePoints(conv) );
+        document.querySelector("#conv1").value = conv;
+        document.querySelector("#conv2").value = strToCodePoints(conv);
     });
-/*        var stripped = stripDiacriticsLocal(this.value);
-        $("#codes2").val(stripped);
-        $("#codes3").val( strToCodePoints(stripped) );  
-        convertLocal(this.value); 
-    }); */
-    //$("#inp").on("change", function(){convertLocal()});
 
-    $("#compareButton").click(compareLocal);
+    document.querySelector("#compareButton").addEventListener("click", compareLocal);
 }
 
 function compareLocal() {
-    var a = $("#comp1").val();
-    var b = $("#comp2").val();
-    var c = compare(a, b, 0xFFFFFFFF);
-
-    $("#compareResult").text(c);
+    let str1 = document.querySelector("#comp1").value;
+    let str2 = document.querySelector("#comp2").value;
+    let res = compare(str1, str2, 0xFFFFFFFF);
+    document.querySelector("#compareResult").innerText = res;
 }
 
-var forceLowercase = true;
+function toggle_diacritic(str, pos, diacritic, unicodeMode) {
+    if (pos < 0 || pos > str.length) {
+        return { str: str, pos: str.length };
+    }
+    let max_combining_chars = 10;
+    let replace_len = Math.min(max_combining_chars + 1, pos);
+    let s = str.slice(pos - replace_len, pos);
+    let res = toggle(s, parseInt(diacritic), false, parseInt(unicodeMode));
+    //console.log("res: " + res);
 
-var unicodeMode = 0;
+    let new_pos = (pos - replace_len) + res.length;
+
+    return { str: str.slice(0, pos - replace_len) + res + str.slice(pos), pos: new_pos };
+}
+
+//let forceLowercase = true;
+let unicodeMode = 0;
 function handleKey(e) {
+    if (typeof(this.selectionStart) == "number" && typeof(this.selectionEnd) == "number") {
+        let val = this.value;
+        let start = this.selectionStart;
+        let charCode = typeof(e.which) == "number" ? e.which : e.keyCode;
+        let key = String.fromCharCode(charCode);
 
-    var val = this.value;
-    e = e || event;
-    if (typeof(this.selectionStart) == "number" && typeof(this.selectionEnd) == "number") 
-    {
-        var start = this.selectionStart;
-        var end = this.selectionEnd;
-        var newLetter = "";
-        var replacing = 0;
-        var charCode = typeof(e.which) == "number" ? e.which : e.keyCode;
-        console.log("handlekey1: " + charCode);
-        var key = String.fromCharCode(charCode);
-
-        if (charCode && charCode > 64 && charCode < 123) //transliterate letter
-        {
-            //newLetter = accentSyllable("", key.codePointAt(0));
+        if (charCode && charCode > 64 && charCode < 123) { //transliterate letter
+            let end = this.selectionEnd;
+            let replacing = 0;
+            let newLetter = "";
             newLetter = translit( key ) ;
-            console.log("new: " + newLetter + ", " + key );
-        }
-        else if (charCode && charCode > 47 && charCode < 58) //number: 0-9 are 48-57
-        { 
-            //underdot,rough,smooth,acute,grave,circ,macron,breve,iotasub,diaeresis
-            //var diacriticKeys = [11,5,6,1,3,2,4,10,7,9];
-            //var hckey = diacriticKeys[ parseInt(key) ];
-
-            var combining = [0x0300, 0x0301, 0x0304, 0x0306, 0x0308, 0x0313, 0x0314, 0x0323, 0x0342, 0x0345];
-            var offset = 1;
-            for (var i = start; i > -1; i--) {
-                if (combining.indexOf(val.codePointAt(i - 1)) > -1) {
-                    offset++;
-                }
-                else {
-                    break;
-                }
+            if (newLetter.length > 0) {
+                this.value = val.slice(0, start - replacing) + newLetter + val.slice(end);
+                this.selectionStart = this.selectionEnd = start + 1;
+                e.preventDefault();
+                return false;
             }
-
-            unicodeMode = $("input:radio[name='unicodeMode']:checked").val();
-            //console.log("unicode mode: " + unicodeMode);
-            
-            //newLetter = accentSyllable(val.slice(start - offset, start), parseInt(key), false, parseInt(unicodeMode));
-            newLetter = toggle(val.slice(start - offset, start), parseInt(key), false, parseInt(unicodeMode));
-            replacing = start - (start - offset);
         }
-
-        if (newLetter.length > 0) {
-            //update the input/textarea
-            this.value = val.slice(0, start - replacing) + newLetter + val.slice(end);
-            // Move the caret
-            this.selectionStart = this.selectionEnd = (start - replacing) + newLetter.length;
-            //doElse();
+        else if (charCode && charCode > 47 && charCode < 58) { //number: 0-9 are 48-57
+            unicodeMode = document.querySelector("input[name=unicodeMode]:checked").value;
+            let r = toggle_diacritic(val, this.selectionStart, key, unicodeMode);
+            //console.log("aaa2: " + r.str + ", " + r.pos);
+            this.value = r.str;
+            this.selectionStart = this.selectionEnd = r.pos;
+            e.preventDefault();
             return false;
         }
-        else if (charCode && ((charCode > 47 && charCode < 58) || (charCode > 64 && charCode < 123)))
-        {
-            //doElse();
-            return false; //this prevents numbers from being possible at very start of text field
-        }
     }
-    //doElse();
-    return true; //this allows most punctuation to pass through
+    return true; // true allows most punctuation, etc. pass through
 }
 
 </script>
 <style>
 @font-face {
-  font-family: 'WebNewAthenaUnicode';
-  src: url('/newathu5_8.ttf') format('truetype');
+    font-family: 'WebNewAthenaUnicode';
+    src: url('/newathu5_8.ttf') format('truetype');
 }
 body { 
     margin:0px;padding:0px;background-color:#BBB;color:black;font-family: helvetica,arial;
