@@ -12,9 +12,7 @@
 
         async function run() {
             await init('./hoplitekb_wasm_rs_bg.wasm');
-
             // make the function available to the browser
-            //window.reverse = reverse;
             window.convert = convert;
             window.toggle = toggle;
             window.translit = translit;
@@ -69,13 +67,12 @@ function start() {
         
         document.querySelector("#codes").value = strToCodePoints(this.value) ;
 
-        var stripped = strip_diacritics(this.value);
+        let stripped = strip_diacritics(this.value);
         document.querySelector("#codes2").value = stripped;
         document.querySelector("#codes3").value = strToCodePoints(stripped) ;
 
-        var convertMode = document.querySelector("input[name=convertMode]:checked").value;
-        //console.log("convert mode: " + convertMode);
-        var conv = convert(this.value, parseInt(convertMode));
+        let convertMode = document.querySelector("input[name=convertMode]:checked").value;
+        let conv = convert(this.value, parseInt(convertMode));
         document.querySelector("#conv1").value = conv;
         document.querySelector("#conv2").value = strToCodePoints(conv);
     });
