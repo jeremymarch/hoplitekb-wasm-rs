@@ -94,11 +94,10 @@ function toggle_diacritic(str, pos, diacritic, unicodeMode) {
     if (pos < 0 || pos > str.length) {
         return { str: str, pos: str.length };
     }
-    let max_combining_chars = 10;
+    const max_combining_chars = 10;
     let replace_len = Math.min(max_combining_chars + 1, pos);
     let s = str.slice(pos - replace_len, pos);
     let res = toggle(s, parseInt(diacritic), false, parseInt(unicodeMode));
-    //console.log("res: " + res);
 
     let new_pos = (pos - replace_len) + res.length;
 
@@ -109,18 +108,16 @@ function toggle_diacritic(str, pos, diacritic, unicodeMode) {
 let unicodeMode = 0;
 function handleKey(e) {
     if (typeof(this.selectionStart) == "number" && typeof(this.selectionEnd) == "number") {
-        let val = this.value;
+        let text = this.value;
         let start = this.selectionStart;
         let charCode = typeof(e.which) == "number" ? e.which : e.keyCode;
         let key = String.fromCharCode(charCode);
 
         if (charCode && charCode > 64 && charCode < 123) { //transliterate letter
+            let newLetter = translit(key);
             let end = this.selectionEnd;
-            let replacing = 0;
-            let newLetter = "";
-            newLetter = translit( key ) ;
             if (newLetter.length > 0) {
-                this.value = val.slice(0, start - replacing) + newLetter + val.slice(end);
+                this.value = text.slice(0, start) + newLetter + text.slice(end);
                 this.selectionStart = this.selectionEnd = start + 1;
                 e.preventDefault();
                 return false;
@@ -128,10 +125,9 @@ function handleKey(e) {
         }
         else if (charCode && charCode > 47 && charCode < 58) { //number: 0-9 are 48-57
             unicodeMode = document.querySelector("input[name=unicodeMode]:checked").value;
-            let r = toggle_diacritic(val, this.selectionStart, key, unicodeMode);
-            //console.log("aaa2: " + r.str + ", " + r.pos);
-            this.value = r.str;
-            this.selectionStart = this.selectionEnd = r.pos;
+            let res = toggle_diacritic(text, start, key, unicodeMode);
+            this.value = res.str;
+            this.selectionStart = this.selectionEnd = res.pos;
             e.preventDefault();
             return false;
         }
