@@ -1,12 +1,12 @@
 [package]
 name = "hoplitekb-wasm-rs"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["jeremymarch <jmarch@gradcenter.cuny.edu>"]
 edition = "2021"
 
 [dependencies]
 wasm-bindgen = "0.2.83"
-polytonic-greek = { git = "https://github.com/jeremymarch/polytonic-greek", default-features = false, version = "0.4.3" }
+polytonic-greek = { git = "https://github.com/jeremymarch/polytonic-greek", default-features = false, version = "0.4.4" }
 # polytonic-greek = { path = "../polytonic-greek", default-features = false }
 
 [lib]
