@@ -11,12 +11,13 @@ use polytonic_greek::*;
 extern crate wasm_bindgen;
 use wasm_bindgen::prelude::*;
 
-
+#[cfg(feature = "hgk_strip")]
 #[wasm_bindgen]
 pub fn strip_diacritics(l:&str) -> String {
 	hgk_strip_diacritics(l, 0xFFFFFFFF)
 }
 
+#[cfg(feature = "hgk_convert")]
 #[wasm_bindgen]
 pub fn convert(l:&str, mode:i32) -> String {
 	let m = match mode {
@@ -65,6 +66,7 @@ pub fn translit(l:&str) -> String {
 	}
 }
 
+#[cfg(feature = "hgk_compare")]
 #[wasm_bindgen]
 pub fn compare(a:&str, b:&str, compare_type:u32) -> i32 {
 	hgk_compare(a, b, compare_type)

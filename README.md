@@ -3,7 +3,7 @@ To build and test with files in www directory:
 if not installed:  
 cargo install -f wasm-bindgen-cli
 
-1. cargo build --target wasm32-unknown-unknown --release
+1. cargo build --target wasm32-unknown-unknown --release (--no-default-features)
 
 2. wasm-bindgen --target web --no-typescript --out-dir www/ target/wasm32-unknown-unknown/release/hoplitekb_wasm_rs.wasm
 

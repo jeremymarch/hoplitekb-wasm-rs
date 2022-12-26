@@ -1,6 +1,6 @@
 [package]
 name = "hoplitekb-wasm-rs"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["jeremymarch <jmarch@gradcenter.cuny.edu>"]
 edition = "2021"
 
@@ -8,6 +8,12 @@ edition = "2021"
 wasm-bindgen = "0.2.83"
 polytonic-greek = { git = "https://github.com/jeremymarch/polytonic-greek", default-features = false, version = "0.4.5" }
 # polytonic-greek = { path = "../polytonic-greek", default-features = false }
+
+[features]
+default = ["hgk_convert", "hgk_strip", "hgk_compare"]
+hgk_convert = []
+hgk_strip = []
+hgk_compare = []
 
 [lib]
 crate-type =["cdylib"]
