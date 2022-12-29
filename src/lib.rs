@@ -57,7 +57,7 @@ pub fn toggle(l:&str, d:i32, on_only:bool, mode:i32) -> String {
 
 #[wasm_bindgen]
 pub fn translit(l:&str) -> String {
-	if l.chars().next() != None {
+	if l.chars().next().is_some() {
 		let input = l.chars().next().unwrap();
 		hgk_transliterate(input as usize).to_string()
 	}
