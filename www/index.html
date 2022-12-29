@@ -109,7 +109,7 @@ function handleKey(e) {
     if (typeof(this.selectionStart) == "number" && typeof(this.selectionEnd) == "number") {
         let text = this.value;
         let start = this.selectionStart;
-        let key = e.key;
+        let key = e.key;//.toLowerCase(); //force lower case
 
         if ( !isNaN( parseInt(key) ) ) {
             unicodeMode = document.querySelector("input[name=unicodeMode]:checked").value;
@@ -119,7 +119,7 @@ function handleKey(e) {
             e.preventDefault();
             return false;
         }
-        else {
+        else if (key.length == 1) { //len == 1 to exclude keys like "ENTER", etc.
             let greek_letter = translit(key); //returns \0 if the character cannot be transliterated
             if (greek_letter !== "\0") {
                 let end = this.selectionEnd;            
