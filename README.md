@@ -11,5 +11,7 @@ cargo install -f wasm-bindgen-cli
 
 4. http://0.0.0.0:8000/
 
+e.g. cargo build --target wasm32-unknown-unknown --release --no-default-features --features "hgk_compare_multiple_forms"  
+  
 
 https://rustwasm.github.io/docs/book/introduction.html
